@@ -1,10 +1,13 @@
 {
   "name": "squid-angular",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean",
     "build": "ng build",
+    "prebuild:prod": "npm run clean",
     "build:prod": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "publish:public": "npm version patch && npm run build:prod && npm pack --dry-run --verbose dist/squid-angular"
@@ -28,6 +31,7 @@
     "@angular/cli": "~15.2.0",
     "@angular/compiler-cli": "^15.2.0",
     "ng-packagr": "^15.2.2",
-    "typescript": "~4.9.4"
+    "typescript": "~4.9.4",
+    "rimraf": "^4.1.3"
   }
 }
