@@ -1,15 +1,16 @@
 {
   "name": "@squidcloud/angular",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Squid Angular SDK",
   "keywords": [
     "Squid",
     "Squid Cloud",
     "angular"
   ],
+  "private": false,
   "peerDependencies": {
     "@angular/common": ">=13",
-    "@angular/core": ">=13",
+    "@angular/core": ">=13"
   },
   "dependencies": {
     "tslib": "^2.3.0",

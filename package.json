@@ -1,6 +1,6 @@
 {
   "name": "squid-angular",
-  "version": "1.0.4",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -10,9 +10,12 @@
     "prebuild:prod": "npm run clean",
     "build:prod": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
-    "publish:public": "npm version patch && npm run build:prod && npm pack --dry-run --verbose dist/squid-angular"
+    "publish:public": "cd projects/squid-angular && npm version patch && cd ../../ && npm run build:prod && npm publish --access public ./dist/squid-angular"
   },
-  "private": true,
+  "files": [
+    "dist/squid-angular"
+  ],
+  "private": false,
   "dependencies": {
     "@angular/animations": "^15.2.0",
     "@angular/common": "^15.2.0",
