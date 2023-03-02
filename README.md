@@ -39,24 +39,26 @@ In the local environment, you can use the `Local` region.
 ```ts
 squidRegion: SquidRegion.Local,
 ```
+
+Note: If you do not environments files in your Angular application, you can generate them using the `ng generate` command:
+```sh
+ng generate environments
 ```
 * In your Angular root module, import the `SquidModule` and configure it with your Squid Cloud Application ID:
 ```ts
 import { SquidModule } from '@squidcloud/angular';
-```
-* Add the `SquidModule` to your application's imports:
-```ts
+// ...
 @NgModule({
   // ...
  imports: [
   SquidModule.forRoot({
-      appId: environment.squidAppId, // Your app ID
-      region: environment.squidRegion, // The region in which your application runs (or 'local')
+      appId: environment.squidAppId,
+      region: environment.squidRegion,
    }),
 ],
 // ...
 ```
-* **If you're using an existing application**, just reuse the existing application's ID.
+* If you're using an existing application, just reuse the existing application's ID.
 
 The above will provide a `Squid` instance that you can inject in different services and components of your application.
 
