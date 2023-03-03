@@ -26,18 +26,17 @@ Create an **Application** using the [Squid Cloud Console](https://console.squid.
 * Copy the **Application ID**
 * Add the following to your Angular environment configuration:
 ```ts
-import { SquidRegion } from '@squidcloud/common';
 export const environment = {
   // ...
   // Squid
   squidAppId: <YOUR_SQUID_CLOUD_APPLICATION_ID>,
-  squidRegion: SquidRegion.<YOUR_SQUID_CLOUD_REGION>,
+  squidRegion: <YOUR_SQUID_CLOUD_REGION>,
   // ...
 };
 ```
-In the local environment, you can use the `Local` region.
+In the local environment, you can use the `local` region.
 ```ts
-squidRegion: SquidRegion.Local,
+squidRegion: 'local',
 ```
 
 Note: If you do not environments files in your Angular application, you can generate them using the `ng generate` command:

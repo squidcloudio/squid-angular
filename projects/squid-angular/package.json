@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "tslib": "^2.3.0",
-    "@squidcloud/common": "^1.0.6",
-    "@squidcloud/client": "^1.0.19"
+    "@squidcloud/common": "^1.0.9",
+    "@squidcloud/client": "^1.0.23"
   },
   "sideEffects": false
 }
