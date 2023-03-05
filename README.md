@@ -16,68 +16,48 @@ This project only supports the [actively supported versions of Angular as stated
 
 Using npm:
 
-```sh
+```
 npm install @squidcloud/angular
 ```
 
 ### Configure Squid Cloud
 
 Create an **Application** using the [Squid Cloud Console](https://console.squid.cloud).
-* Copy the **Application ID**
-* Add the following to your Angular environment configuration:
-```ts
-import { SquidRegion } from '@squidcloud/common';
-export const environment = {
-  // ...
-  // Squid
-  squidAppId: <YOUR_SQUID_CLOUD_APPLICATION_ID>,
-  squidRegion: SquidRegion.<YOUR_SQUID_CLOUD_REGION>,
-  // ...
-};
-```
-In the local environment, you can use the `Local` region.
-```ts
-squidRegion: SquidRegion.Local,
-```
-
-Note: If you do not environments files in your Angular application, you can generate them using the `ng generate` command:
-```sh
-ng generate environments
-```
-* In your Angular root module, import the `SquidModule` and configure it with your Squid Cloud Application ID:
-```ts
+* In your Angular root module, import the `SquidModule` and configure it with your Squid Cloud application ID and region:
+```typescript
 import { SquidModule } from '@squidcloud/angular';
 // ...
 @NgModule({
   // ...
- imports: [
-  SquidModule.forRoot({
-      appId: environment.squidAppId,
-      region: environment.squidRegion,
-   }),
-],
+  imports: [
+    SquidModule.forRoot({
+      appId: <YOUR_APP_ID>,
+      region: <YOUR SQUID REGION>,
+    }),
+  ],
 // ...
 ```
+When running against a local Squid instance, you can use the `Local` region.
 * If you're using an existing application, just reuse the existing application's ID.
 
 The above will provide a `Squid` instance that you can inject in different services and components of your application.
 
 Alternatively, you can provide the Squid instance using a factory function:
 * Import the `Squid` class and the Squid factory provider:
-```ts
+```typescript
 import { provideSquid } from '@squidcloud/angular';
 import { Squid } from '@squidcloud/client';
 ```
 * Add the `provideSquid` provider to your application's providers:
-```ts
+```typescript
 @NgModule({
   // ...
  providers: [
   {
      provide: Squid,
      useFactory: provideSquid({
-       appId: environment.squidAppId,
-       region: environment.squidRegion, 
+       appId: <YOUR_APP_ID>,
+       region: <YOUR SQUID REGION>, 
      }),
     deps: [NgZone],
   },
@@ -87,7 +67,7 @@ import { Squid } from '@squidcloud/client';
 
 The above configuration enables you to create more than one instance of `Squid` in the same Angular application.
 For example, you can create two Squid instances in your Angular application:
-```ts
+```typescript
 export const usersSquidInjectionToken = new InjectionToken<Squid>('usersSquid');
 export const billingSquidInjectionToken = new InjectionToken<Squid>('billingSquid');
 
@@ -97,16 +77,16 @@ export const billingSquidInjectionToken = new InjectionToken<Squid>('billingSqui
   {
      provide: usersSquidInjectionToken,
      useFactory: provideSquid({
-       appId: environment.squidAppId,
-       region: environment.squidRegion, 
+       appId: <YOUR_APP_ID>,
+       region: <YOUR SQUID REGION>,
      }),
     deps: [NgZone],
   },
    {
      provide: billingSquidInjectionToken,
      useFactory: provideSquid({
-       appId: environment.otherSquidAppId,
-       region: environment.otherSquidRegion,
+       appId: <YOUR_APP_ID>,
+       region: <YOUR SQUID REGION>,
      }),
      deps: [NgZone],
    },
@@ -115,7 +95,7 @@ export const billingSquidInjectionToken = new InjectionToken<Squid>('billingSqui
 ```
 
 ### Use Squid Client in your Angular Component
-```ts
+```typescript
 import { Component } from '@angular/core';
 import { Squid } from '@squidcloud/client';
 
@@ -131,7 +111,7 @@ export class MyComponent {
 ```
 
 ### Use Squid Client in your Angular Service
-```ts
+```typescript
 import { Injectable } from '@angular/core';
 import { Squid } from '@squidcloud/client';
 
@@ -143,7 +123,7 @@ export class MyService {
 ```
 
 Alternatively, you can inject the `Squid` instance using an injection token in case it was provided using a token:
-```ts
+```typescript
 import { Injectable, Inject } from '@angular/core';
 import { Squid } from '@squidcloud/client';
 import { usersSquidInjectionToken } from './my.module';
@@ -155,8 +135,55 @@ export class MyService {
 }
 ```
 
+A full working example of a component using Squid:
+
+```typescript
+import {Component} from '@angular/core';
+import {Squid} from '@squidcloud/client';
+import {map} from 'rxjs';
+
+// Define your type
+type User = { id: string, email: string, age: number };
+
+@Component({
+  selector: 'my-component',
+  template: `
+    <ul>
+      <li *ngFor="let user of users | async">
+        {{ user.email }}
+      </li>
+    </ul>
+    <br/>
+    <button (click)="createNewUser()">Create user</button>`,
+})
+export class MyComponent {
+  // Subscribe to data
+  users = this.squid
+    .collection<User>('Users')
+    .query()
+    .where('age', '>', 18)
+    .snapshots()
+    .pipe(
+      map((users) => users.map((user) => user.data()))
+    );
+
+  constructor(private readonly squid: Squid) {
+  }
+
+  // Insert data
+  async createNewUser(): Promise<void> {
+    const userId = crypto.randomUUID();
+    const email = `${userId}@gmail.com`;
+    await this.squid.collection<User>('Users').doc(userId).insert({
+      id: userId,
+      email,
+      age: Math.floor(Math.random() * 100)
+    });
+  }
+}
+```
+
 ## API reference
 
-Explore public API's available in the [Squid Cloud documentation](https://squid.cloud/docs).
-
+Explore public APIs available in the [Squid Cloud documentation](https://squid.cloud/docs).
 ---
