@@ -4,7 +4,7 @@ A library for integrating [Squid Cloud](https://squid.cloud) with an Angular app
 
 ## Features
 
-* Angular module and provider for initializing and injecting the Squid Client SDK
+- Angular module and provider for initializing and injecting the Squid Client SDK
 
 ## Getting started
 
@@ -23,7 +23,9 @@ npm install @squidcloud/angular
 ### Configure Squid Cloud
 
 Create an **Application** using the [Squid Cloud Console](https://console.squid.cloud).
-* In your Angular root module, import the `SquidModule` and configure it with your Squid Cloud application ID and region:
+
+- In your Angular root module, import the `SquidModule` and configure it with your Squid Cloud application ID and region:
+
 ```typescript
 import { SquidModule } from '@squidcloud/angular';
 // ...
@@ -31,24 +33,28 @@ import { SquidModule } from '@squidcloud/angular';
   // ...
   imports: [
     SquidModule.forRoot({
-      appId: <YOUR_APP_ID>,
-      region: <YOUR SQUID REGION>,
+      appId: '<YOUR_APP_ID>',
+      region: '<YOUR_SQUID_REGION>',
     }),
   ],
 // ...
 ```
-When running against a local Squid instance, you can use the `Local` region.
-* If you're using an existing application, just reuse the existing application's ID.
+
+- If you're using an existing application, just reuse the existing application's ID.
 
 The above will provide a `Squid` instance that you can inject in different services and components of your application.
 
 Alternatively, you can provide the Squid instance using a factory function:
-* Import the `Squid` class and the Squid factory provider:
+
+- Import the `Squid` class and the Squid factory provider:
+
 ```typescript
 import { provideSquid } from '@squidcloud/angular';
 import { Squid } from '@squidcloud/client';
 ```
-* Add the `provideSquid` provider to your application's providers:
+
+- Add the `provideSquid` provider to your application's providers:
+
 ```typescript
 @NgModule({
   // ...
@@ -56,8 +62,8 @@ import { Squid } from '@squidcloud/client';
   {
      provide: Squid,
      useFactory: provideSquid({
-       appId: <YOUR_APP_ID>,
-       region: <YOUR SQUID REGION>, 
+       appId: '<YOUR_APP_ID>',
+       region: '<YOUR_SQUID_REGION>',
      }),
     deps: [NgZone],
   },
@@ -67,6 +73,7 @@ import { Squid } from '@squidcloud/client';
 
 The above configuration enables you to create more than one instance of `Squid` in the same Angular application.
 For example, you can create two Squid instances in your Angular application:
+
 ```typescript
 export const usersSquidInjectionToken = new InjectionToken<Squid>('usersSquid');
 export const billingSquidInjectionToken = new InjectionToken<Squid>('billingSquid');
@@ -77,16 +84,16 @@ export const billingSquidInjectionToken = new InjectionToken<Squid>('billingSqui
   {
      provide: usersSquidInjectionToken,
      useFactory: provideSquid({
-       appId: <YOUR_APP_ID>,
-       region: <YOUR SQUID REGION>,
+       appId: '<YOUR_APP_ID>',
+       region: '<YOUR_SQUID_REGION>',
      }),
     deps: [NgZone],
   },
    {
      provide: billingSquidInjectionToken,
      useFactory: provideSquid({
-       appId: <YOUR_APP_ID>,
-       region: <YOUR SQUID REGION>,
+       appId: '<YOUR_OTHER_APP_ID>',
+       region: '<YOUR_OTHER_SQUID_REGION>',
      }),
      deps: [NgZone],
    },
@@ -95,6 +102,7 @@ export const billingSquidInjectionToken = new InjectionToken<Squid>('billingSqui
 ```
 
 ### Use Squid Client in your Angular Component
+
 ```typescript
 import { Component } from '@angular/core';
 import { Squid } from '@squidcloud/client';
@@ -105,32 +113,36 @@ import { Squid } from '@squidcloud/client';
   styleUrls: ['./my.component.css'],
 })
 export class MyComponent {
-  constructor(private readonly squid: Squid) { }
+  constructor(private readonly squid: Squid) {}
   // ...
 }
 ```
 
 ### Use Squid Client in your Angular Service
+
 ```typescript
 import { Injectable } from '@angular/core';
 import { Squid } from '@squidcloud/client';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class MyService {
-  constructor(private readonly squid: Squid) { }
+  constructor(private readonly squid: Squid) {}
   // ...
 }
 ```
 
 Alternatively, you can inject the `Squid` instance using an injection token in case it was provided using a token:
+
 ```typescript
 import { Injectable, Inject } from '@angular/core';
 import { Squid } from '@squidcloud/client';
 import { usersSquidInjectionToken } from './my.module';
 
-@injectable({providedIn: 'root'})
+@injectable({ providedIn: 'root' })
 export class MyService {
-  constructor(@Inject(usersSquidInjectionToken) private readonly usersSquid: Squid) { }
+  constructor(
+    @Inject(usersSquidInjectionToken) private readonly usersSquid: Squid,
+  ) {}
   // ...
 }
 ```
@@ -138,12 +150,12 @@ export class MyService {
 A full working example of a component using Squid:
 
 ```typescript
-import {Component} from '@angular/core';
-import {Squid} from '@squidcloud/client';
-import {map} from 'rxjs';
+import { Component } from '@angular/core';
+import { Squid } from '@squidcloud/client';
+import { map } from 'rxjs';
 
 // Define your type
-type User = { id: string, email: string, age: number };
+type User = { id: string; email: string; age: number };
 
 @Component({
   selector: 'my-component',
@@ -153,8 +165,9 @@ type User = { id: string, email: string, age: number };
         {{ user.email }}
       </li>
     </ul>
-    <br/>
-    <button (click)="createNewUser()">Create user</button>`,
+    <br />
+    <button (click)="createNewUser()">Create user</button>
+  `,
 })
 export class MyComponent {
   // Subscribe to data
@@ -163,22 +176,22 @@ export class MyComponent {
     .query()
     .where('age', '>', 18)
     .snapshots()
-    .pipe(
-      map((users) => users.map((user) => user.data()))
-    );
+    .pipe(map((users) => users.map((user) => user.data)));
 
-  constructor(private readonly squid: Squid) {
-  }
+  constructor(private readonly squid: Squid) {}
 
   // Insert data
   async createNewUser(): Promise<void> {
     const userId = crypto.randomUUID();
     const email = `${userId}@gmail.com`;
-    await this.squid.collection<User>('Users').doc(userId).insert({
-      id: userId,
-      email,
-      age: Math.floor(Math.random() * 100)
-    });
+    await this.squid
+      .collection<User>('Users')
+      .doc(userId)
+      .insert({
+        id: userId,
+        email,
+        age: Math.floor(Math.random() * 100),
+      });
   }
 }
 ```
@@ -186,4 +199,5 @@ export class MyComponent {
 ## API reference
 
 Explore public APIs available in the [Squid Cloud documentation](https://squid.cloud/docs).
+
 ---
