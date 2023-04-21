@@ -10,6 +10,7 @@
     "prebuild:prod": "npm run clean",
     "build:prod": "ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
+    "update": "cd projects/squid-angular && ncu @squidcloud/client @squidcloud/common -u",
     "publish:public": "cd projects/squid-angular && npm version patch && cd ../../ && npm run build:prod && npm publish --access public ./dist/squid-angular"
   },
   "files": [
@@ -34,6 +35,7 @@
     "@angular/cli": "~15.2.0",
     "@angular/compiler-cli": "^15.2.0",
     "ng-packagr": "^15.2.2",
+    "npm-check-updates": "^16.10.8",
     "prettier": "^2.8.4",
     "rimraf": "^4.1.3",
     "typescript": "~4.9.4"
