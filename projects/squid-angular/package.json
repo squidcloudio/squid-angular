@@ -1,6 +1,6 @@
 {
   "name": "@squidcloud/angular",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Squid Angular SDK",
   "keywords": [
     "Squid",
@@ -13,8 +13,8 @@
     "@angular/core": ">=13"
   },
   "dependencies": {
-    "@squidcloud/client": "^1.0.61",
-    "@squidcloud/common": "^1.0.43",
+    "@squidcloud/client": "^1.0.64",
+    "@squidcloud/common": "^1.0.46",
     "tslib": "^2.3.0"
   },
   "sideEffects": false
