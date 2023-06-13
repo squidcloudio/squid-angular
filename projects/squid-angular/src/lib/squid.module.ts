@@ -18,6 +18,7 @@ export class SquidModule {
   }
 }
 
+/** Factory method for constructing a Squid instance. */
 export function provideSquid(options: SquidOptions): (ngZone: NgZone) => Squid {
   return (ngZone: NgZone) =>
     new Squid({
