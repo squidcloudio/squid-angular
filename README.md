@@ -198,6 +198,6 @@ export class MyComponent {
 
 ## API reference
 
-Explore public APIs available in the [Squid Cloud documentation](https://squid.cloud/docs).
+Explore public APIs available in the [Squid Cloud documentation](https://docs.squid.cloud).
 
 ---
