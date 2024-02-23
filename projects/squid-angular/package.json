@@ -13,7 +13,7 @@
     "@angular/core": ">=13"
   },
   "dependencies": {
-    "@squidcloud/client": "^1.0.160",
+    "@squidcloud/client": "^1.0.183",
     "tslib": "^2.3.0"
   },
   "sideEffects": false
